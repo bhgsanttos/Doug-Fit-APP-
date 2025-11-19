@@ -1,0 +1,72 @@
+body {
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #000;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px solid #ffcc00;
+}
+
+.logo {
+    width: 80px;
+}
+
+nav {
+    display: flex;
+    overflow-x: auto;
+    background: #222;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+nav button {
+    background: #ffcc00;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tela {
+    display: none;
+    padding: 20px;
+}
+
+.ativa {
+    display: block;
+}
+
+.card {
+    background: #1e1e1e;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border-left: 4px solid #ffcc00;
+}
+
+.preview {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+/* CHAT */
+textarea {
+    width: 100%;
+    height: 140px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+    background: #1f1f1f;
+    color: white;
+    font-size: 16px;
+}
