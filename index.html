@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DougFit App</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <header>
+        <img src="logo.png" class="logo" alt="DougFit Logo">
+        <h1>DougFit</h1>
+    </header>
+
+    <nav>
+        <button onclick="mostrarTela('home')">Home</button>
+        <button onclick="mostrarTela('treino')">Treino</button>
+        <button onclick="mostrarTela('avaliacao')">Avaliação</button>
+        <button onclick="mostrarTela('dieta')">Dieta</button>
+        <button onclick="mostrarTela('comunidade')">Comunidade</button>
+        <button onclick="mostrarTela('chat')">Chat IA</button>
+    </nav>
+
+    <!-- HOME -->
+    <section id="home" class="tela ativa">
+        <h2>Bem-vindo ao DougFit</h2>
+        <p>Seu app de treino, evolução e performance.</p>
+    </section>
+
+    <!-- TREINO -->
+    <section id="treino" class="tela">
+        <h2>Seu Treino</h2>
+        <button onclick="gerarTreino()">Gerar Treino</button>
+        <div id="resultadoTreino" class="card"></div>
+    </section>
+
+    <!-- AVALIAÇÃO -->
+    <section id="avaliacao" class="tela">
+        <h2>Avaliação Física</h2>
+
+        <label>Peso (kg):</label>
+        <input type="number" id="peso">
+
+        <label>Altura (cm):</label>
+        <input type="number" id="altura">
+
+        <button onclick="calcularIMC()">Calcular IMC</button>
+
+        <p id="resultadoIMC"></p>
+
+        <h3>Upload da Foto</h3>
+        <input type="file" accept="image/*" id="uploadFoto" onchange="previewFoto()">
+        <img id="fotoPreview" class="preview">
+    </section>
+
+    <!-- DIETA -->
+    <section id="dieta" class="tela">
+        <h2>Plano Alimentar</h2>
+        <div class="card">
+            <h3>Café da manhã</h3>
+            <p>Ovos + aveia + frutas.</p>
+        </div>
+
+        <div class="card">
+            <h3>Almoço</h3>
+            <p>Arroz, feijão, frango e legumes.</p>
+        </div>
+    </section>
+
+    <!-- COMUNIDADE -->
+    <section id="comunidade" class="tela">
+        <h2>Comunidade DougFit</h2>
+        <p>Compartilhe evolução e conquiste resultados.</p>
+    </section>
+
+    <!-- CHAT GPT -->
+    <section id="chat" class="tela">
+        <h2>Assistente DougFit (IA)</h2>
+
+        <textarea id="mensagemUsuario" placeholder="Pergunte algo sobre treino, dieta, evolução..."></textarea>
+
+        <button onclick="enviarParaChatGPT()">Enviar</button>
+
+        <div id="respostaIA" class="card"></div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
