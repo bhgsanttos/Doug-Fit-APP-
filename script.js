@@ -1,91 +1,139 @@
-// ======== TROQUE AQUI PELA SUA KEY =========
-const API_KEY = "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";
-// ===========================================
-
-function mostrarTela(tela) {
-    const telas = document.querySelectorAll(".tela");
-    telas.forEach(t => t.classList.remove("ativa"));
-    document.getElementById(tela).classList.add("ativa");
+body {
+    margin: 0;
+    background: #0d0f12;
+    color: white;
+    font-family: 'Inter', sans-serif;
 }
 
-// TREINO
-function gerarTreino() {
-    const treino = `
-        <h3>Treino da Semana</h3>
-        <p><strong>Segunda:</strong> Peito + Tríceps</p>
-        <p><strong>Terça:</strong> Costas + Bíceps</p>
-        <p><strong>Quarta:</strong> Pernas</p>
-        <p><strong>Quinta:</strong> Ombro + Trapézio</p>
-        <p><strong>Sexta:</strong> Full Body</p>
-    `;
-    document.getElementById("resultadoTreino").innerHTML = treino;
+.app-header {
+    text-align: center;
+    padding: 15px;
 }
 
-// IMC
-function calcularIMC() {
-    let peso = parseFloat(document.getElementById("peso").value);
-    let altura = parseFloat(document.getElementById("altura").value) / 100;
-
-    if (!peso || !altura) {
-        document.getElementById("resultadoIMC").innerText = "Preencha peso e altura.";
-        return;
-    }
-
-    let imc = peso / (altura * altura);
-    document.getElementById("resultadoIMC").innerText = "Seu IMC: " + imc.toFixed(2);
+.logo {
+    width: 120px;
+    opacity: 0.95;
 }
 
-// Preview da Foto
-function previewFoto() {
-    const file = document.getElementById("uploadFoto").files[0];
-    if (file) {
-        document.getElementById("fotoPreview").src = URL.createObjectURL(file);
-    }
+.screen {
+    display: none;
+    padding: 20px;
+}
+.screen.active { display: block; }
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
-// CHAT GPT
-async function enviarParaChatGPT() {
-    const pergunta = document.getElementById("mensagemUsuario").value;
-    const respostaDiv = document.getElementById("respostaIA");
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
 
-    if (!pergunta.trim()) {
-        respostaDiv.innerHTML = "<p>Digite uma pergunta primeiro.</p>";
-        return;
-    }
+.tile {
+    background: rgba(255,255,255,0.06);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: .2s;
+}
 
-    respostaDiv.innerHTML = "<p><em>Gerando resposta...</em></p>";
+.tile:hover { transform: scale(1.03); }
 
-    try {
-        const resposta = await fetch("https://api.openai.com/v1/chat/completions", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: [
-                    {
-                        role: "system",
-                        content: "Você é o assistente DougFit. Você responde como treinador profissional, especialista em treino, dieta, performance e avaliação física."
-                    },
-                    {
-                        role: "user",
-                        content: pergunta
-                    }
-                ]
-            })
-        });
+form input,
+form select,
+form textarea {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    font-size: 15px;
+}
 
-        const data = await resposta.json();
+textarea { height: 100px; resize: none; }
 
-        respostaDiv.innerHTML = `
-            <p><strong>Resposta da IA:</strong></p>
-            <p>${data.choices?.[0]?.message?.content || "Erro ao obter resposta."}</p>
-        `;
+.btn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #0066ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-    } catch (error) {
-        respostaDiv.innerHTML = "<p>Erro ao conectar com a IA.</p>";
-        console.error(error);
-    }
+.output {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Chat */
+.chat-box {
+    height: 300px;
+    overflow-y: auto;
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.user { background:#0066ff; text-align:right; }
+.bot { background:rgba(255,255,255,0.12); }
+
+.chat-input {
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+}
+.chat-input input {
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+}
+.chat-input button {
+    width:60px;
+    background:#0066ff;
+    border:none;
+    color:white;
+    border-radius:10px;
+}
+
+/* Bottom nav */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #0d0f12;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.bottom-nav button {
+    background:none;
+    border:none;
+    color:white;
+    font-size:25px;
 }
