@@ -1,91 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DougFit App</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <header>
-        <img src="logo.png" class="logo" alt="DougFit Logo">
-        <h1>DougFit</h1>
-    </header>
+<header class="app-header">
+    <img src="logo.png" class="logo" alt="DougFit">
+</header>
 
-    <nav>
-        <button onclick="mostrarTela('home')">Home</button>
-        <button onclick="mostrarTela('treino')">Treino</button>
-        <button onclick="mostrarTela('avaliacao')">Avaliação</button>
-        <button onclick="mostrarTela('dieta')">Dieta</button>
-        <button onclick="mostrarTela('comunidade')">Comunidade</button>
-        <button onclick="mostrarTela('chat')">Chat IA</button>
-    </nav>
+<main id="screens">
 
     <!-- HOME -->
-    <section id="home" class="tela ativa">
-        <h2>Bem-vindo ao DougFit</h2>
-        <p>Seu app de treino, evolução e performance.</p>
-    </section>
+    <section id="home" class="screen active">
+        <h1 class="title">DougFit • Inteligência Artificial</h1>
 
-    <!-- TREINO -->
-    <section id="treino" class="tela">
-        <h2>Seu Treino</h2>
-        <button onclick="gerarTreino()">Gerar Treino</button>
-        <div id="resultadoTreino" class="card"></div>
-    </section>
-
-    <!-- AVALIAÇÃO -->
-    <section id="avaliacao" class="tela">
-        <h2>Avaliação Física</h2>
-
-        <label>Peso (kg):</label>
-        <input type="number" id="peso">
-
-        <label>Altura (cm):</label>
-        <input type="number" id="altura">
-
-        <button onclick="calcularIMC()">Calcular IMC</button>
-
-        <p id="resultadoIMC"></p>
-
-        <h3>Upload da Foto</h3>
-        <input type="file" accept="image/*" id="uploadFoto" onchange="previewFoto()">
-        <img id="fotoPreview" class="preview">
-    </section>
-
-    <!-- DIETA -->
-    <section id="dieta" class="tela">
-        <h2>Plano Alimentar</h2>
-        <div class="card">
-            <h3>Café da manhã</h3>
-            <p>Ovos + aveia + frutas.</p>
-        </div>
-
-        <div class="card">
-            <h3>Almoço</h3>
-            <p>Arroz, feijão, frango e legumes.</p>
+        <div class="tiles">
+            <div class="tile" onclick="openScreen('treino')">🏋️ Treino IA</div>
+            <div class="tile" onclick="openScreen('receitas')">🥗 Receitas IA</div>
+            <div class="tile" onclick="openScreen('chat')">🤖 Chat IA</div>
         </div>
     </section>
 
-    <!-- COMUNIDADE -->
-    <section id="comunidade" class="tela">
-        <h2>Comunidade DougFit</h2>
-        <p>Compartilhe evolução e conquiste resultados.</p>
+    <!-- TREINO IA -->
+    <section id="treino" class="screen">
+        <h2>Gerador de Treino Inteligente</h2>
+
+        <form id="formTreino">
+            <input id="peso" type="number" placeholder="Peso (kg)">
+            <input id="altura" type="number" placeholder="Altura (cm)">
+
+            <select id="nivel">
+                <option value="">Nível</option>
+                <option value="iniciante">Iniciante</option>
+                <option value="intermediário">Intermediário</option>
+                <option value="avançado">Avançado</option>
+            </select>
+
+            <select id="objetivo">
+                <option value="">Objetivo</option>
+                <option value="ganho de massa">Ganho de massa</option>
+                <option value="definição">Definição</option>
+                <option value="emagrecimento">Emagrecimento</option>
+            </select>
+
+            <textarea id="restricoes" placeholder="Restrições ou doenças (opcional)"></textarea>
+            <textarea id="detalhes" placeholder="Detalhes adicionais (horários, dores, equipamentos...)"></textarea>
+
+            <button type="button" class="btn" onclick="gerarTreinoIA()">Gerar Treino</button>
+        </form>
+
+        <div id="treinoContent" class="output"></div>
     </section>
 
-    <!-- CHAT GPT -->
-    <section id="chat" class="tela">
-        <h2>Assistente DougFit (IA)</h2>
 
-        <textarea id="mensagemUsuario" placeholder="Pergunte algo sobre treino, dieta, evolução..."></textarea>
+    <!-- RECEITAS IA -->
+    <section id="receitas" class="screen">
+        <h2>Gerador de Receitas Inteligentes</h2>
 
-        <button onclick="enviarParaChatGPT()">Enviar</button>
+        <form id="formReceitas">
+            <textarea id="alimentos" placeholder="Liste os alimentos disponíveis (ex: frango, brócolis, batata-doce)"></textarea>
+            <button type="button" class="btn" onclick="gerarReceitasIA()">Gerar Receitas</button>
+        </form>
 
-        <div id="respostaIA" class="card"></div>
+        <div id="receitasContent" class="output"></div>
     </section>
 
-    <script src="script.js"></script>
+
+    <!-- CHAT IA -->
+    <section id="chat" class="screen">
+        <h2>Chat com IA</h2>
+
+        <div id="chatBox" class="chat-box"></div>
+
+        <div class="chat-input">
+            <input id="userMessage" type="text" placeholder="Digite sua mensagem...">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </section>
+
+</main>
+
+
+<nav class="bottom-nav">
+    <button onclick="openScreen('home')">🏠</button>
+    <button onclick="openScreen('treino')">🏋️</button>
+    <button onclick="openScreen('receitas')">🥗</button>
+    <button onclick="openScreen('chat')">🤖</button>
+</nav>
+
+<script src="app.js"></script>
 </body>
 </html>
