@@ -1,7 +1,7 @@
 /* ================================
     COLE SUA API KEY AQUI
 =================================== */
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "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";
 
 /* ===== Navegação ===== */
 function openScreen(id) {
