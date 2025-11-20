@@ -1,5 +1,5 @@
 /* ================================
-    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
+    COLE SUA API KEY AQUI
 =================================== */
 const OPENAI_API_KEY = "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";
 
