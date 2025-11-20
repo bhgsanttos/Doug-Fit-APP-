@@ -1,139 +1,121 @@
-body {
-    margin: 0;
-    background: #0d0f12;
-    color: white;
-    font-family: 'Inter', sans-serif;
+/* ================================
+    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
+=================================== */
+const OPENAI_API_KEY = "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";
+
+/* ===== Navegação ===== */
+function openScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
 }
 
-.app-header {
-    text-align: center;
-    padding: 15px;
+/* ===== Função de chamada ao GPT ===== */
+async function callGPT(prompt) {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [{ role: "user", content: prompt }]
+        })
+    });
+
+    const data = await response.json();
+    return data.choices[0].message.content;
 }
 
-.logo {
-    width: 120px;
-    opacity: 0.95;
+/* ================================
+       GERADOR DE TREINO IA
+=================================== */
+async function gerarTreinoIA() {
+    const peso = document.getElementById("peso").value;
+    const altura = document.getElementById("altura").value;
+    const nivel = document.getElementById("nivel").value;
+    const objetivo = document.getElementById("objetivo").value;
+    const restricoes = document.getElementById("restricoes").value;
+    const detalhes = document.getElementById("detalhes").value;
+
+    document.getElementById("treinoContent").innerHTML = "Gerando treino com IA...";
+
+    const prompt = `
+Crie um TREINO COMPLETO com base nas seguintes informações:
+
+Peso: ${peso} kg  
+Altura: ${altura} cm  
+Nível: ${nivel}  
+Objetivo: ${objetivo}  
+Restrições / doenças: ${restricoes || "nenhuma"}  
+Detalhes adicionais: ${detalhes || "nenhum"}
+
+Regras:
+- Gere uma divisão completa (A/B/C ou ABCDE dependendo do nível)
+- Explique cada exercício
+- Inclua séries, repetições e descanso
+- Adapte o treino às restrições
+- Inclua recomendações finais
+- Entregue tudo organizado e fácil de ler
+`;
+
+    const result = await callGPT(prompt);
+    document.getElementById("treinoContent").innerHTML = result;
 }
 
-.screen {
-    display: none;
-    padding: 20px;
-}
-.screen.active { display: block; }
+/* ================================
+       GERADOR DE RECEITAS IA
+=================================== */
+async function gerarReceitasIA() {
+    const alimentos = document.getElementById("alimentos").value;
 
-.title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
+    if (!alimentos.trim()) {
+        alert("Digite os alimentos disponíveis.");
+        return;
+    }
 
-.tiles {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
+    document.getElementById("receitasContent").innerHTML = "Gerando receitas com IA...";
 
-.tile {
-    background: rgba(255,255,255,0.06);
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 18px;
-    border: 1px solid rgba(255,255,255,0.08);
-    cursor: pointer;
-    transition: .2s;
-}
+    const prompt = `
+Gere 5 RECEITAS usando SOMENTE estes alimentos:
 
-.tile:hover { transform: scale(1.03); }
+Alimentos disponíveis: ${alimentos}
 
-form input,
-form select,
-form textarea {
-    width: 100%;
-    margin-top: 12px;
-    padding: 14px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: white;
-    font-size: 15px;
+Para cada receita inclua:
+- Nome da receita
+- Ingredientes
+- Modo de preparo COMPLETO
+- Tempo total de preparo
+- Uma variação extra
+- Informação nutricional aproximada
+
+Evite usar ingredientes que não foram citados.
+`;
+
+    const result = await callGPT(prompt);
+    document.getElementById("receitasContent").innerHTML = result;
 }
 
-textarea { height: 100px; resize: none; }
+/* ================================
+             CHAT
+=================================== */
+async function sendMessage() {
+    const input = document.getElementById("userMessage");
+    const msg = input.value.trim();
+    if (!msg) return;
 
-.btn {
-    width: 100%;
-    margin-top: 18px;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    background: #0066ff;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+    appendMessage("user", msg);
+    input.value = "";
+
+    const resposta = await callGPT(msg);
+    appendMessage("bot", resposta);
 }
 
-.output {
-    margin-top: 20px;
-    background: rgba(255,255,255,0.05);
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.12);
-}
-
-/* Chat */
-.chat-box {
-    height: 300px;
-    overflow-y: auto;
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.12);
-}
-
-.message {
-    margin-bottom: 10px;
-    padding: 12px;
-    border-radius: 10px;
-}
-
-.user { background:#0066ff; text-align:right; }
-.bot { background:rgba(255,255,255,0.12); }
-
-.chat-input {
-    display:flex;
-    gap:10px;
-    margin-top:12px;
-}
-.chat-input input {
-    flex:1;
-    padding:12px;
-    border-radius:10px;
-    border:none;
-}
-.chat-input button {
-    width:60px;
-    background:#0066ff;
-    border:none;
-    color:white;
-    border-radius:10px;
-}
-
-/* Bottom nav */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #0d0f12;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-}
-
-.bottom-nav button {
-    background:none;
-    border:none;
-    color:white;
-    font-size:25px;
+function appendMessage(type, text) {
+    const box = document.getElementById("chatBox");
+    const div = document.createElement("div");
+    div.className = "message " + type;
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
 }
